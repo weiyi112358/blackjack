@@ -129,8 +129,12 @@ func main() {
 }
 
 func start(w webview.WebView) {
-
-	playersHand.Bet = playersHand.PutBet()
+	if playersHand.CanBet() {
+		playersHand.Bet = playersHand.PutBet()
+	} else {
+		w.Dialog(webview.DialogTypeAlert, 0, "Your wallet is empty!", "Your wallet is empty!\n")
+		w.Terminate()
+	}
 
 	w.Dispatch(func() {
 		w.Eval(`document.getElementById("dealer").getElementsByTagName("p")[0].innerHTML = "` + dealersHand.Cards[0].ToStr() + `";`)
@@ -196,20 +200,4 @@ func stand(w webview.WebView) {
 		w.Terminate()
 	}
 
-}
-
-func getBet(wallet *float64) int {
-	bet := 0
-	valid := false
-	for valid == false {
-		valid = true
-		bet = 5
-
-		if float64(bet) > *wallet {
-			valid = false
-		}
-
-	}
-	*wallet = *wallet - float64(bet)
-	return bet
 }
