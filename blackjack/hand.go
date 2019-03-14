@@ -116,6 +116,20 @@ func (hand *Hand) Split() *Hand {
 	return split
 }
 
+func (hand *Hand) CanDouble() bool {
+	if len(hand.Cards) == 2 && !hand.IsBlackjack() {
+		return true
+	} else {
+		return false
+	}
+
+}
+
+func (hand *Hand) Double() {
+	hand.PutBet()
+	hand.Hit()
+}
+
 func (hand *Hand) Hit() *cards.Card {
 	if hand.PutDown(hand.deck.DealCard()) != nil {
 		return hand.Cards[len(hand.Cards)-1]
