@@ -25,6 +25,15 @@ func NewHand(deck *cards.Deck) *Hand {
 	return hand
 }
 
+func (hand *Hand) CanBet() bool {
+	if hand.Wallet < 5 {
+		return false
+	} else {
+		return true
+	}
+
+}
+
 func (hand *Hand) PutBet() int {
 	hand.Wallet = hand.Wallet - 5
 	return 5
