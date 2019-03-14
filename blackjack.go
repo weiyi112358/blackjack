@@ -19,9 +19,13 @@ var indexHTML = `
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	</head>
 	<body>
-            <button onclick="external.invoke('start')">Start</button>
-            <button onclick="external.invoke('hit')">Hit</button>
-            <button onclick="external.invoke('stand')">Stand</button>
+			Operator: <p id = playerIndex>Player1</p>
+			<button onclick="external.invoke('start')">Start</button>
+			<br>
+			<button onclick="external.invoke('hit')">Hit</button>
+			<br>
+			<button onclick="external.invoke('stand')">Stand</button>
+			<br>
 			<div id="dealer">
 				<h2> dealer</h2>
 				<p>blank</p>
@@ -32,22 +36,28 @@ var indexHTML = `
 			<div id = "player1">
 				<h2>player1</h2>
 				<p>blank</p>
-				<p class = "wallet"></p>
-				<p class = "bet"></p>
+				wallet:
+				<p class = "wallet">0</p>
+				bet:
+				<p class = "bet">0</p>
 			</div>
 
 			<div id = "player2">
 				<h2>player2</h2>
 				<p>blank</p>
-				<p class = "wallet"></p>
-				<p class = "bet"></p>
+				wallet:
+				<p class = "wallet">0</p>
+				bet:
+				<p class = "bet">0</p>
 			</div>
 
 			<div id = "player3">
 				<h2>player3</h2>
 				<p>blank</p>
-				<p class = "wallet"></p>
-				<p class = "bet"></p>
+				wallet:
+				<p class = "wallet">0</p>
+				bet:
+				<p class = "bet">0</p>
 			</div>
 	</body>
 	<style> 
@@ -85,6 +95,8 @@ var indexHTML = `
 var deck = cards.NewDeck(6)
 var dealersHand = blackjack.NewHand(deck)
 var playersHand = blackjack.NewHand(deck)
+var playersHand2 = blackjack.NewHand(deck)
+var playersHand3 = blackjack.NewHand(deck)
 
 func startServer() string {
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
@@ -137,6 +149,12 @@ func start(w webview.WebView) {
 		w.Eval(`document.getElementById("player1").getElementsByTagName("p")[0].innerHTML = "` + playersHand.ToStr() + `";`)
 		w.Eval(`document.getElementById("player1").getElementsByClassName("wallet")[0].innerHTML = "` + strconv.Itoa(playersHand.Wallet) + `";`)
 		w.Eval(`document.getElementById("player1").getElementsByClassName("bet")[0].innerHTML = "` + strconv.Itoa(playersHand.Bet) + `";`)
+		w.Eval(`document.getElementById("player2").getElementsByTagName("p")[0].innerHTML = "` + playersHand2.ToStr() + `";`)
+		w.Eval(`document.getElementById("player2").getElementsByClassName("wallet")[0].innerHTML = "` + strconv.Itoa(playersHand2.Wallet) + `";`)
+		w.Eval(`document.getElementById("player2").getElementsByClassName("bet")[0].innerHTML = "` + strconv.Itoa(playersHand2.Bet) + `";`)
+		w.Eval(`document.getElementById("player3").getElementsByTagName("p")[0].innerHTML = "` + playersHand3.ToStr() + `";`)
+		w.Eval(`document.getElementById("player3").getElementsByClassName("wallet")[0].innerHTML = "` + strconv.Itoa(playersHand3.Wallet) + `";`)
+		w.Eval(`document.getElementById("player3").getElementsByClassName("bet")[0].innerHTML = "` + strconv.Itoa(playersHand3.Bet) + `";`)
 	})
 
 	if playersHand.IsBlackjack() {
