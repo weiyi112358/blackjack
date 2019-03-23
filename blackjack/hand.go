@@ -7,6 +7,7 @@ type Hand struct {
 	deck   *cards.Deck
 	Wallet int
 	Bet    int
+	IsBust  bool
 }
 
 func NewHand(deck *cards.Deck) *Hand {
@@ -16,6 +17,18 @@ func NewHand(deck *cards.Deck) *Hand {
 	hand.Wallet = 50
 	hand.Bet = 0
 
+	for i := 0; i < 2; i++ {
+		if hand.PutDown(hand.deck.DealCard()) == nil {
+			return nil
+		}
+	}
+
+	return hand
+}
+
+func (hand *Hand) Refresh() *Hand {
+	
+	hand.Discard()
 	for i := 0; i < 2; i++ {
 		if hand.PutDown(hand.deck.DealCard()) == nil {
 			return nil
