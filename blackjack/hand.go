@@ -38,6 +38,14 @@ func (hand *Hand) Refresh() *Hand {
 	return hand
 }
 
+func (hand *Hand) CanBet() bool {
+	if hand.Wallet < 5 {
+		return false
+	} else {
+		return true
+	}
+
+}
 func (hand *Hand) PutBet() int {
 	hand.Wallet = hand.Wallet - 5
 	return 5
@@ -118,6 +126,20 @@ func (hand *Hand) Split() *Hand {
 	}
 
 	return split
+}
+
+func (hand *Hand) CanDouble() bool {
+	if len(hand.Cards) == 2 && !hand.IsBlackjack() {
+		return true
+	} else {
+		return false
+	}
+
+}
+
+func (hand *Hand) Double() {
+	hand.PutBet()
+	hand.Hit()
 }
 
 func (hand *Hand) Hit() *cards.Card {

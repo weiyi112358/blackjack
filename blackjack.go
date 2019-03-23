@@ -71,13 +71,13 @@ var indexHTML = `
 		#player2
 		{
 			position:absolute;
-			left:350px;
+			left:500px;
 			top:300px
 		}
 		#player3
 		{
 			position:absolute;
-			left:600px;
+			left:900px;
 			top:300px
 		}
 		#walletTitle
@@ -142,7 +142,7 @@ func main() {
 	url := startServer()
 
 	w := webview.New(webview.Settings{
-		Width:                  800,
+		Width:                  1200,
 		Height:                 800,
 		Title:                  "blackjack demo",
 		Resizable:              true,
