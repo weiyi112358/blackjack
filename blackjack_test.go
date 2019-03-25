@@ -5,7 +5,7 @@ import "./cards"
 import "testing"
 
 func TestHand(t *testing.T) {
-    deck := cards.NewDeck()
+    deck := cards.NewDeck(1)
 
     deck.Stack(cards.NewCard("2", "hearts"))
     deck.Stack(cards.NewCard("2", "spades"))
@@ -89,7 +89,7 @@ func TestHand(t *testing.T) {
 }
 
 func TestDeckExhaustionDealingHand(t *testing.T) {
-    deck := cards.NewDeck()
+    deck := cards.NewDeck(1)
 
     for i := 0; i < 51; i++ {
         deck.DealCard()
@@ -121,7 +121,7 @@ func TestDeckExhaustionDealingHand(t *testing.T) {
 }
 
 func TestDiscardHand(t *testing.T) {
-    deck := cards.NewDeck()
+    deck := cards.NewDeck(1)
     var hand *blackjack.Hand
 
     for i := 0; i < 26; i++ {
