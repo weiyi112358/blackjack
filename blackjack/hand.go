@@ -4,11 +4,14 @@ import "../cards"
 
 type Hand struct {
 	cards.Pile
-	deck   *cards.Deck
-	Wallet int
-	Bet    int
-	IsBust  bool
+	deck     *cards.Deck
+	Wallet   int
+	Bet      int
+	IsBust   bool
+	HasSplit bool
 }
+
+var Bet = 5
 
 func NewHand(deck *cards.Deck) *Hand {
 	var hand *Hand = new(Hand)
@@ -16,6 +19,7 @@ func NewHand(deck *cards.Deck) *Hand {
 	hand.deck = deck
 	hand.Wallet = 50
 	hand.Bet = 0
+	hand.HasSplit = false
 
 	for i := 0; i < 2; i++ {
 		if hand.PutDown(hand.deck.DealCard()) == nil {
@@ -27,28 +31,41 @@ func NewHand(deck *cards.Deck) *Hand {
 }
 
 func (hand *Hand) Refresh() *Hand {
-	
-	hand.Discard()
+
 	for i := 0; i < 2; i++ {
 		if hand.PutDown(hand.deck.DealCard()) == nil {
 			return nil
 		}
 	}
+	hand.Bet = 0
+	hand.IsBust = false
+	hand.HasSplit = false
+
+	return hand
+}
+
+func (hand *Hand) Flush() *Hand {
+
+	hand.Discard()
+
+	hand.Bet = 0
+	hand.IsBust = false
+	hand.HasSplit = false
 
 	return hand
 }
 
 func (hand *Hand) CanBet() bool {
-	if hand.Wallet < 5 {
+	if hand.Wallet < Bet {
 		return false
 	} else {
 		return true
 	}
 
 }
-func (hand *Hand) PutBet() int {
-	hand.Wallet = hand.Wallet - 5
-	return 5
+func (hand *Hand) PutBet() {
+	hand.Wallet = hand.Wallet - Bet
+	hand.Bet = hand.Bet + Bet
 }
 
 func (hand *Hand) ScoreCard(i int) int {
@@ -116,7 +133,7 @@ func (hand *Hand) Split() *Hand {
 	if !hand.CanSplit() {
 		return nil
 	}
-
+	hand.HasSplit = true
 	var split *Hand = new(Hand)
 	split.deck = hand.deck
 	split.PutDown(hand.PickUp())
